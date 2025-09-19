@@ -3,49 +3,9 @@ Swaxnet Database Documentation
 
 # Swaxnet API Examples & Usage Guide
 
-## 🔒 Security Update (IMPORTANT)
-### 1. Nothing else
-
-#### 2. Secure CRUD Operations
-```bash
-# Get all data 
-curl -X GET "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5" \
-  -H "Authorization: Bearer YOUR_API_KEY"
-
-# Get specific record
-curl -X GET "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5&id=1" \
-  -H "Authorization: Bearer YOUR_API_KEY"
-
-# Create record
-curl -X POST "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "username": "john_doe",
-    "email": "john@example.com",
-    "age": 25
-  }'
-
-# Update record
-curl -X PUT "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5&id=1" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "username": "john_updated",
-    "age": 26
-  }'
-
-# Delete record
-curl -X DELETE "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5&id=1" \
-  -H "Authorization: Bearer YOUR_API_KEY"
-```
-
-
-### 🔒 Secure CRUD (RECOMMENDED)
-
 #### Create (POST)
 ```bash
-# Add a new user using table_id
+# Add a new user using tableId=5
 curl -X POST "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -60,7 +20,7 @@ curl -X POST "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5" \
 
 #### Read (GET)
 ```bash
-# Get all users from table_id=5
+# Get all users from tableId=5
 curl -X GET "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5" \
   -H "Authorization: Bearer YOUR_API_KEY"
 
@@ -71,7 +31,7 @@ curl -X GET "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5&id=1" \
 
 #### Update (PUT)
 ```bash
-# Update user with ID 1 in table_id=5
+# Update user with ID 1 in tableId=5
 curl -X PUT "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5&id=1" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_API_KEY" \
@@ -128,15 +88,6 @@ curl -X DELETE "https://www.api.swaxnet.xyz/api/data/secure.php?swax=5&id=1" \
 
 ## Storage Operations
 
-### Create Folder
-```bash
-curl -X POST https://www.api.swaxnet.xyz/api/storage/create_folder.php \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "folder": "profile_pictures"
-  }'
-```
 
 ### Upload File
 ```bash
@@ -225,59 +176,6 @@ createUser({
 getUsers().then(users => console.log(users));
 ```
 
-### 🔄 Legacy JavaScript Examples (Backward Compatible)
-
-```javascript
-const API_KEY = 'your_api_key_here';
-const BASE_URL = 'https://www.api.swaxnet.xyz/api';
-
-// Create a new record (legacy)
-async function createUser(userData) {
-  const response = await fetch(`${BASE_URL}/data/index.php?table_id=5`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`
-    },
-    body: JSON.stringify(userData)
-  });
-  return await response.json();
-}
-
-// Get all users (legacy)
-async function getUsers() {
-  const response = await fetch(`${BASE_URL}/data/index.php?table_id=5`, {
-    headers: {
-      'Authorization': `Bearer ${API_KEY}`
-    }
-  });
-  return await response.json();
-}
-
-// Update user (legacy)
-async function updateUser(userId, updateData) {
-  const response = await fetch(`${BASE_URL}/data/index.php?table_id=5&id=${userId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`
-    },
-    body: JSON.stringify(updateData)
-  });
-  return await response.json();
-}
-
-// Delete user (legacy)
-async function deleteUser(userId) {
-  const response = await fetch(`${BASE_URL}/data/index.php?table_id=5&id=${userId}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${API_KEY}`
-    }
-  });
-  return await response.json();
-}
-```
 
 ### Using Axios (Secure Method)
 ```javascript
@@ -485,23 +383,6 @@ Headers: Authorization: Bearer YOUR_API_KEY
 
 ## 📤 Table Export & Backup
 
-### Export Table as JSON
-```bash
-GET /api/data/export.php?swax=TABLE_ID&type=json
-Headers: Authorization: Bearer YOUR_API_KEY
-```
-
-### Export Table as CSV
-```bash
-GET /api/data/export.php?swax=TABLE_ID&type=csv
-Headers: Authorization: Bearer YOUR_API_KEY
-```
-
-### Full Account Backup (All Tables + Files)
-```bash
-GET /api/account/full_backup.php
-Headers: Authorization: Bearer YOUR_API_KEY
-```
 
 ## 📁 File Storage CRUD (Upload, List, Download, Delete)
 
@@ -531,99 +412,11 @@ Form Data:
 ```
 
 ### List Folders
-```bash
-GET /api/storage/list_folders.php
-Headers: Authorization: Bearer YOUR_API_KEY
-```
-
-### Download Folder (ZIP)
-```bash
-GET /api/storage/download.php?folder=FOLDER_NAME
-Headers: Authorization: Bearer YOUR_API_KEY
-```
-
-### Download File
-```bash
-GET /api/storage/download.php?file=FILENAME
-Headers: Authorization: Bearer YOUR_API_KEY
-```
-
-### Delete Folder
-```bash
-POST /api/storage/delete_folder.php
-Headers: Content-Type: application/json
-
-Body:
-{
-  "folder_name": "FOLDER_NAME",
-  "csrf_token": "YOUR_CSRF_TOKEN"
-}
-```
-**Success:**
-```json
-{
-  "success": true,
-  "message": "Folder deleted successfully"
-}
-```
-**Error:**
-```json
-{
-  "error": "Folder not found"
-}
-```
 
 ## 🛑 Error & Success Messages
 - All endpoints return either `{ "success": true, ... }` or `{ "error": "..." }`
 - Common errors: `Table not found`, `Invalid API key`, `File extension not allowed`, `Storage limit exceeded`, `Folder not found`, `Record not found`
 
----
-For more, see SECURE_API_GUIDE.md
-
-## CSRF Protection
-All form-based API requests require a CSRF token. Example:
-
-```html
-<input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generateCsrfToken()); ?>">
-```
-
-Or in JSON body:
-
-```json
-{
-  "username": "...",
-  "password": "...",
-  "csrf_token": "..."
-}
-```
-
-## 🔄 Migration Guide
-
-### For Existing Applications:
-
-1. **Get your table IDs:**
-```bash
-curl -X GET "https://www.api.swaxnet.xyz/api/data/tables.php" \
-  -H "Authorization: Bearer YOUR_API_KEY"
-```
-
-2. **Update your API calls:**
-```javascript
-// OLD (Insecure)
-fetch('/api/data/index.php?table=users')
-
-// NEW (Secure)
-fetch('/api/data/secure.php?swax=5')
-```
-
-3. **Store table IDs in your config:**
-```javascript
-const TABLE_IDS = {
-  users: 5,
-  products: 6,
-  orders: 7
-};
-```
 
 ## 📞 Support
 
